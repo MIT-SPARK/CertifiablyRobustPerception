@@ -43,10 +43,10 @@ and put them at the same level of this repo (eg., if this repo's path is `~/Code
 
 ## Examples
 
-#### Solve geometric perception using primal relaxation
+### Solve geometric perception using primal relaxation
 Run examples in the `example_relaxation` folder. 
 
-#### Solve geometric perception using fast heuristics plus dual certification
+### Solve geometric perception using fast heuristics plus dual certification
 Run examples in the `example_certification` folder. 
 
 
