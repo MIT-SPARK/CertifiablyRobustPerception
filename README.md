@@ -16,7 +16,15 @@ If you find this implementation useful for your research, please cite:
 
 ## About
 ![Summary of Contributions](assets/summary.jpg)
-We propose a general framework for designing certifiable algorithms for a broad class of robust geometric perception problems. From the primal perspective, we apply Lasserre’s hierarchy of moment relaxations, together with basis reduction, to construct tight semidefinite relaxations to nonconvex robust estimation problems. From the dual perspective, we use SOS relaxation to convert the certification of a given candidate solution to a convex feasibility SDP, and then we leverage Douglas-Rachford Splitting to solve the feasibility SDP and compute a suboptimality for the candidate solution. Our primal relaxation is tight, and our dual certification is correct and scalable.
+We propose the _first_ general framework for designing certifiable algorithms for a broad class of robust geometric perception problems. In particular, we study robust geometric perception under the _truncated least squares (TLS)_ estimator, which is known to be robust against a large amount of outliers, but leads to hard, non-smooth and non-convex optimizations. 
+
+We first show that, a class of TLS estimation problems can be reformulated as polynomial optimizations (POP), which are equally hard, but exihibit special structural sparsity. Then, we provide two perspectives for designing certifiably robust algorithms:
+
+- From the primal perspective, we apply Lasserre’s hierarchy of moment relaxations, together with basis reduction, to construct tight semidefinite relaxations to nonconvex POPs. Solving the semidefinite programs (SDP) simultaneously returns an accurate geometric estimate (e.g., 3D rotations and translations) and a certificate for global optimality. 
+
+- From the dual perspective, we first leverage exisiting fast heuristics (e.g., GNC and RANSAC) to obtain a candidate estimate (without guarantees) to the TLS estimation problems, but then we use Sums-of-Squares (SOS) relaxation to convert the certification of the given candidate estimate to a convex feasibility SDP, and apply Douglas-Rachford Splitting to solve the feasibility SDP and compute a suboptimality for the candidate estimate (the estimate is globally optimal when the suboptimality is zero). 
+
+Our primal relaxation is **tight**, and our dual certification is correct and **scalable** (beyond the reach of current SDP solvers).
 
 Currently, this repo implements the following solvers:
 
@@ -48,5 +56,11 @@ Run examples in the `example_relaxation` folder.
 
 ### Solve geometric perception using fast heuristics plus dual certification
 Run examples in the `example_certification` folder. 
+
+## Resources on Certifiably Robust Perception
+- TEASER: Fast and Certifiable Point Cloud Registration
+    - Paper: https://arxiv.org/pdf/2001.07715.pdf
+    - Code: https://github.com/MIT-SPARK/TEASER-plusplus
+- RSS 2020 Tutorial: https://mit-spark.github.io/CertifiablePerception-RSS2020/
 
 
