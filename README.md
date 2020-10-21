@@ -14,6 +14,8 @@ If you find this implementation useful for your research, please cite:
 }
 ```
 
+For a quick summary of this paper, please watch the [**video presentation**](https://youtu.be/3qoPw6GT1JE).
+
 ## About
 ![Summary of Contributions](assets/summary.jpg)
 We propose the _first_ general framework for designing certifiable algorithms for a broad class of robust geometric perception problems. In particular, we study robust geometric perception under the _truncated least squares (TLS)_ estimator, which is known to be robust against a large amount of outliers, but leads to hard, non-smooth and non-convex optimizations. 
@@ -62,5 +64,10 @@ Run examples in the `example_certification` folder.
     - Paper: https://arxiv.org/pdf/2001.07715.pdf
     - Code: https://github.com/MIT-SPARK/TEASER-plusplus
 - RSS 2020 Tutorial: https://mit-spark.github.io/CertifiablePerception-RSS2020/
+
+## Acknowledgements
+The authors would like to thank Jie Wang, Victor Magron, and Jean B. Lasserre for the discussion about Lasserre’s hierarchy of moment and SOS relaxations; Alp Yurtsever, Suvrit Sra, and Yang Zheng for the discussion about using first-order methods to solve large-scale SDPs; Bo Chen and Tat-Jun Chin for kindly sharing the data for satellite pose estimation; and the anonymous reviews.
+
+This work was partially funded by ARL DCIST CRA W911NF-17-2-0181, ONR RAIDER N00014-18-1-2828, and the Lincoln Laboratory “Resilient Perception in Degraded Environments” program.
 
 
