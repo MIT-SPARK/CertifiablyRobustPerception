@@ -1,0 +1,9 @@
+[submodule "STRIDE"]
+	path = STRIDE
+	url = https://github.com/MIT-SPARK/STRIDE.git
+[submodule "manopt"]
+	path = manopt
+	url = https://github.com/NicolasBoumal/manopt.git
+[submodule "spotless"]
+	path = spotless
+	url = https://github.com/spot-toolbox/spotless.git
