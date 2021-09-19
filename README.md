@@ -19,5 +19,15 @@ If you find this library helpful or use it in your projects, please cite:
 }
 ```
 
-## Documentation
-Coming soon.
+## Tutorial on Semidefinite Relaxation
+A general polynomial optimization problem (POP) is an optimization problem of the following standard form
+```
+minimize_{x \in R^d}    f(x)
+subject to              h_i(x) =  0, i=1,...,l_h
+                        g_j(x) >= 0, j=1,...,l_g
+```
+where `x \in R^d` is a `d`-dimensional decision variable, `f(x)` is a scalar polynomial objective function, `h_i(x),i=1,...,l_h` are scalar polynomial functions that define equality constraints, and `g_j(x),j=1,...,l_g` are polynomial functions that define inequality constraints. POPs are in general NP-hard problems. For example, one can easily see that binary quadratic programming is an instance of POP, because binary constraints `x_i \in {1, -1}, i=1,...,d` can be easily written as polynomial equalities `h_i(x) = x_i^2 - 1 = 0,i=1,...,d`. 
+
+### Dense Relaxation (Lasserre's Hierarchy)
+
+### Sparse Relaxation (Basis Reduction)
