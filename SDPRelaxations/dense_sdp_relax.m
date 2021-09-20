@@ -30,6 +30,7 @@ if kappa == 1; v = [1;x]; end
 if kappa > 1; v = [1;x;monomials(x,2:kappa)]; end
 
 %% compute multipliers
+fprintf('Compute equality and inequality multipliers ... ')
 kappa2  = 2*kappa;
 pop     = [mykron(v,v);f];
 % equalities
@@ -49,17 +50,16 @@ if l_h > 0
 end
 % inequalities
 l_g     = length(g);
-dim_g   = [];
 lam_g   = {};
 n1s     = [];
-if l_g > 0
+if l_g > 0 % if there are inequality constraints
     for i = 1:l_g
         gi      = g(i);
         deggi   = deg(gi);
         
         if deggi == 0; error('One of your inequality constraints has zero degree.'); end
         
-        ordergi = kappa - ceil(deggi/2);
+        ordergi = kappa - ceil(deggi/2); % order of the multiplier moment matrix
         
         if ordergi == 0
             lamgi = 1;
@@ -71,11 +71,11 @@ if l_g > 0
         
         lamgi_flat  = mykron(lamgi,lamgi);
         pop         = [pop;gi*lamgi_flat];
-        dim_g       = [dim_g;length(lamgi_flat)];
         lam_g       = [lam_g;{lamgi}];
         n1s         = [n1s;length(lamgi)];
     end
 end
+fprintf('Done.\n')
 
 fprintf('POP | maxdeg: %d, l_h: %d, l_g %d, kappa: %d.\n',...
     maxdeg,l_h,l_g,kappa);
@@ -165,7 +165,7 @@ end
 fprintf('Done.\n')
 assert(length(A) == m_mom,'length(A)+length(B) == ndelta!');
 
-%% Now build A's associated with localizing equality constraints
+%% Build A's associated with localizing equality constraints
 if m_h == 0
     % Do nothing
     A_local = {};
@@ -210,8 +210,9 @@ fprintf('Done.\n')
 %% Now build the localizing inequality constraints
 Ag  = {};
 shift = 0;
-if m_g > 0
-    for k = 1:length(n1s)
+if l_g > 0
+    fprintf('Build localizing inequality constraints ... ')
+    for k = 1:l_g
         n1          = n1s(k);
         coef_ineq   = coef_all(:,1+n^2+m_h+shift+(1:n1^2)); % nterms by n1^2
         A1          = {};
@@ -238,14 +239,16 @@ if m_g > 0
         Ag{end+1} = A1;
         shift     = shift + n1^2;
     end
+    fprintf('Done.\n')
 end
 
 assert(length(A) == m,'Total number of equality constraints wrong.')
 
 %% convert to SDPT3 format
+fprintf('Generate SDPT3 data ... ')
 blk{1,1}        = 's';
 blk{1,2}        = n;
-for k = 1:length(n1s)
+for k = 1:l_g
     blk{1+k,1}  = 's';
     blk{1+k,2}  = n1s(k);
 end
@@ -253,16 +256,16 @@ b               = sparse([1],[1],[1],m,1);
 At0             = sparsesvec(blk(1,:),A);
 At              = {At0};
 n1deltas        = triangle_number(n1s);
-for k = 1:length(n1s)
+for k = 1:l_g
     n1delta     = triangle_number(n1s(k));
-    Atg         = [sparse(n1delta,m-m_g),... % moment and localizing
-                    sparse(n1delta,sum(n1deltas(1:k-1))),... % sub PSD g
-                    sparsesvec(blk(1+k,:),Ag{k}),... % sub PSD k-th g
-                    sparse(n1delta,sum(n1deltas(k+1:end)))]; 
+    Atg         = [sparse(n1delta,m-m_g),... % moment and localizing equality
+                   sparse(n1delta,sum(n1deltas(1:k-1))),... % sub PSD g
+                   sparsesvec(blk(1+k,:),Ag{k}),... % sub PSD k-th g
+                   sparse(n1delta,sum(n1deltas(k+1:end)))]; 
     At          = [At;{Atg}];
 end
 C       = {C};
-for k = 1:length(n1s)
+for k = 1:l_g
     C   = [C;{sparse(n1s(k),n1s(k))}];
 end
 
@@ -271,17 +274,20 @@ SDP.At  = At;
 SDP.C   = C;
 SDP.b   = b;
 
+fprintf('Done.\n')
+
 %% convert to sedumi format
+fprintf('Generate sedumi data ... ')
 sK.s  = [n;n1s];
 
 A0t     = sparsevec(blk(1,:),A);
 At      = {A0t};
-for k = 1:length(n1s)
+for k = 1:l_g
     n1sq        = (n1s(k))^2;
     Atg         = [sparse(n1sq,m-m_g),... % moment and localizing
-                    sparse(n1sq,sum(n1deltas(1:k-1))),... % sub PSD g
-                    sparsevec(blk(1+k,:),Ag{k}),... % sub PSD k-th g
-                    sparse(n1sq,sum(n1deltas(k+1:end)))]; 
+                   sparse(n1sq,sum(n1deltas(1:k-1))),... % sub PSD g
+                   sparsevec(blk(1+k,:),Ag{k}),... % sub PSD k-th g
+                   sparse(n1sq,sum(n1deltas(k+1:end)))]; 
     At          = [At;{Atg}];
 end
 
@@ -297,9 +303,8 @@ sdata.c     = sc;
 
 SDP.sedumi   = sdata;
 
-fprintf('=================================================================\n\n\n')
-
+fprintf('Done.\n')
+fprintf('====================================================================\n\n\n')
 info.kappa  = kappa;
 info.lam_g  = lam_g;
-
 end

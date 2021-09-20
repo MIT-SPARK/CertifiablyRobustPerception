@@ -32,7 +32,8 @@ Semidefinite relaxations are a powerful tool for solving nonconvex POPs to **glo
 
 ### Dense Relaxation (Lasserre's Hierarchy)
 
-Lasserre's hierarchy of moment relaxations is a standard technique for relaxing POPs into semidefinite programs (SDPs). The basic idea is as follows. Let `kappa` be a positive integer (called the **relaxation order**) such that `2*kappa` is no smaller than the maximum degree of the defining polynomials `f,h_i,g_j`, and let `v = [x]_kappa` be the set of standard monomials in `x` with degree up to `kappa`. For example, suppose `x = [x_1; x_2]`, then `[x]_kappa` with `kappa = 2` leads to `v = [1; x_1; x_2; x_1*x_2; x_1^2; x_2^2]`. The essential idea of Lasserre's hierarchy is to express the original POP problem in the matrix variable `X = v*v'` (called the **moment matrix**, by construction `X` is positive semidefinite) and relax the POP into a convex SDP. In the [seminal paper of Lasserre](https://epubs.siam.org/doi/abs/10.1137/S1052623400366802?journalCode=sjope8), it was proved that if `kappa` is chosen large enough, then the convex SDP can solve the original nonconvex POP. 
+Lasserre's hierarchy of moment relaxations is a standard technique for relaxing POPs into semidefinite programs (SDPs). The basic idea is as follows. Let `kappa` be a positive integer (called the **relaxation order**) such that `2*kappa` is no smaller than the maximum degree of the defining polynomials `f,h_i,g_j`, and let `v = [x]_kappa` be the set of standard monomials in `x` with degree up to `kappa`. For example, suppose `x = [x_1; x_2]`, then `[x]_kappa` with `kappa = 2` leads to `v = [1; x_1; x_2; x_1*x_2; x_1^2; x_2^2]`. The essential idea of Lasserre's hierarchy is to express the original POP problem in the matrix variable `X = v*v'` (called the **moment matrix**, by construction `X` is positive semidefinite) and relax the POP into a convex SDP. In the [seminal paper of Lasserre](https://epubs.siam.org/doi/abs/10.1137/S1052623400366802?journalCode=sjope8), it was proved that if `kappa` is chosen large enough, then the convex SDP can solve the original nonconvex POP to global optimality. 
+
 Although the underlying mechanics of Lasserre's hierarchy can be complicated (the interested reader can refer to Section 2 of our [paper](https://arxiv.org/abs/2109.03349) for technical details), in this repo we provide a simple function that implements Lasserre's hierarchy:
 ```
 [SDP,info] = dense_sdp_relax(problem,kappa)
@@ -56,19 +57,22 @@ We now use a simple example on binary quadratic programming (BQP) to illustrate 
 ```
 %% Generate random binary quadratic program
 d       = 10; % BQP with d variables
-x       = msspoly('x',d);
+x       = msspoly('x',d); % symbolic decision variables using SPOTLESS
 Q       = randn(d,d); Q = Q + Q'; % a random symmetric matrix
 c       = randn(d,1);
 f       = x'*Q*x + c'*x; % objective function of the BQP
 h       = x.^2 - 1; % equality constraints of the BQP (binary variables)
+g       = [x(1)]; % ask the first variable to be positive
 
 %% Relax BQP into an SDP
 problem.vars            = x;
 problem.objective       = f;
 problem.equality        = h; 
+problem.inequality      = g;
 kappa                   = 2; % relaxation order
 [SDP,info]              = dense_sdp_relax(problem,kappa);
 ```
-In this demo code, we first generate a random binary quadratic programming problem using the package SPOTLESS (which is a submodule of this repo), and then pass the `problem` structure with fields `vars`, `objective` and `equality` to the function `dense_sdp_relax` to generate SDP relaxations. We recommend the user to run the script `example_bqp.m` to see that SDP relaxations can actually solve BQP problems to global optimality.
+In this demo code, we first generate a random binary quadratic programming problem using the package SPOTLESS (which is a submodule of this repo), and then pass the `problem` structure with fields `vars`, `objective`, `equality`, and `inequality` to the function `dense_sdp_relax` to generate SDP relaxations. We recommend the user to run the script `example_bqp.m` to see that SDP relaxations can actually solve BQP problems to global optimality.
 
 ### Sparse Relaxation (Basis Reduction)
+Coming soon.

@@ -10,16 +10,18 @@ addpath('./SDPRelaxations') % implementations for SDP relaxation techniques
 
 %% Generate random binary quadratic program
 d       = 10; % BQP with d variables
-x       = msspoly('x',d);
+x       = msspoly('x',d); % symbolic decision variables using SPOTLESS
 Q       = randn(d,d); Q = Q + Q'; % a random symmetric matrix
 c       = randn(d,1);
 f       = x'*Q*x + c'*x; % objective function of the BQP
 h       = x.^2 - 1; % equality constraints of the BQP (binary variables)
+g       = [x(1)]; % ask the first variable to be positive
 
 %% Relax BQP into an SDP
 problem.vars            = x;
 problem.objective       = f;
 problem.equality        = h; 
+problem.inequality      = g;
 kappa                   = 2; % relaxation order
 [SDP,info]              = dense_sdp_relax(problem,kappa);
 
