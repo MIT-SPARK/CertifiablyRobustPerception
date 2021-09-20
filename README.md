@@ -22,7 +22,7 @@ If you find this library helpful or use it in your projects, please cite:
 ## Tutorial: Semidefinite Relaxation for Polynomial Optimization
 A general polynomial optimization problem (POP) is an optimization problem of the following standard form
 ```
-minimize_{x ∈ R^d}    f(x)
+minimize_{x ∈ R^d}      f(x)
 subject to              h_i(x) == 0, i=1,...,l_h
                         g_j(x) >= 0, j=1,...,l_g
 ```
