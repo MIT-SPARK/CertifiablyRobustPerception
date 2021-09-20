@@ -72,7 +72,7 @@ problem.inequality      = g;
 kappa                   = 2; % relaxation order
 [SDP,info]              = dense_sdp_relax(problem,kappa);
 ```
-In this demo code, we first generate a random binary quadratic programming problem using the package SPOTLESS (which is a submodule of this repo), and then pass the `problem` structure with fields `vars`, `objective`, `equality`, and `inequality` to the function `dense_sdp_relax` to generate SDP relaxations. We recommend the user to run the script `example_bqp.m` to see that SDP relaxations can actually solve BQP problems to global optimality.
+In this demo code, we first generate a random binary quadratic programming problem using the package SPOTLESS (which is a submodule of this repo), and then pass the `problem` structure with fields `vars`, `objective`, `equality`, and `inequality` to the function `dense_sdp_relax` to generate SDP relaxations. We recommend the user to run the script [`example_bqp.m`](https://github.com/MIT-SPARK/CertifiablyRobustPerception/blob/master/example_bqp.m) to check how to solve the `SDP` data using MOSEK, and to see that SDP relaxations can actually solve BQP problems to global optimality.
 
 ### Sparse Relaxation (Basis Reduction)
 Coming soon.
