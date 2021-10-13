@@ -2,6 +2,7 @@ function [SDP,info] = dense_sdp_relax(problem,kappa_user)
 %% Implements dense Lasserre's hierarchy
 %% Heng Yang
 %% Sept. 19, 2021
+%% Oct. 13, 2021: fixed a bug in generating redundant equality constraints
 
 if nargin < 2; kappa_user = 0; end
 if ~isfield(problem,'vars'); error('Please provide variables of the POP.'); end
@@ -43,7 +44,7 @@ if l_h > 0
         
         if deghi == 0; error('One of your equality constraints has zero degree.'); end
         
-        lamhi   = monomials(x,kappa2 - deghi);
+        lamhi   = monomials(x,0:(kappa2 - deghi));
         pop     = [pop;hi*lamhi];
         dim_h   = dim_h + length(lamhi);
     end
@@ -66,7 +67,7 @@ if l_g > 0 % if there are inequality constraints
         elseif ordergi == 1
             lamgi = [1;x];
         else
-            lamgi = [1;x;monomials(2:ordergi)];
+            lamgi = [1;x;monomials(x,2:ordergi)];
         end
         
         lamgi_flat  = mykron(lamgi,lamgi);
@@ -77,7 +78,7 @@ if l_g > 0 % if there are inequality constraints
 end
 fprintf('Done.\n')
 
-fprintf('POP | maxdeg: %d, l_h: %d, l_g %d, kappa: %d.\n',...
+fprintf('POP | maxdeg: %d, l_h: %d, l_g: %d, kappa: %d.\n',...
     maxdeg,l_h,l_g,kappa);
 
 %% decompose polynomials to generate SDP data
