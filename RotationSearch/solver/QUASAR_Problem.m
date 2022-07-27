@@ -54,7 +54,7 @@ Q_cost=sparse(Q_cost);
 Q_cost=Q_cost/barc2;
 
 problem.P = P;
-problem.C = Q_cost;
+problem.C = {Q_cost};
 problem.n = size(Q_cost,1);
 n = problem.n;
 
@@ -148,10 +148,19 @@ if computeConstraintMatrix
     problem.n = size(A{1},1);
     ndelta    = triangle_number(n);
     l         = ndelta - problem.m;
+    blk{1,1} = 's';
+    blk{1,2} = n;
+    problem.blk = blk;
+    
+    At       = sparsesvec(blk,problem.Acell);
+    problem.At = {At};
+    problem.M  = N + 1;
     
     fprintf('Done.\n')
     fprintf('Linear SDP: n = %d, m = %d, m_localize = %d, m_moment = %d, l = %d.\n',...
         problem.n,problem.m,problem.m_localize,problem.m_moment,l);
+    
+    problem      = rmfield(problem,{'P','computeConstraintMatrix','Acell','m_localize','m_moment'});
 end
 
 
