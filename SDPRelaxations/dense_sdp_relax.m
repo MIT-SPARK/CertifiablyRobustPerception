@@ -30,6 +30,12 @@ if kappa == 0; error('kappa=0, looks like this is not a valid POP.'); end
 if kappa == 1; v = [1;x]; end
 if kappa > 1; v = [1;x;monomials(x,2:kappa)]; end
 
+J = diff(f,x);
+info.f                   = f;
+info.J                   = J'; % for evaluate cost gradient
+info.v                   = v; % for lifting
+info.d                   = length(x);
+
 %% compute multipliers
 fprintf('Compute equality and inequality multipliers ... ')
 kappa2  = 2*kappa;
@@ -308,4 +314,5 @@ fprintf('Done.\n')
 fprintf('====================================================================\n\n\n')
 info.kappa  = kappa;
 info.lam_g  = lam_g;
+
 end
