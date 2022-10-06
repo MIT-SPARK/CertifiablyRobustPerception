@@ -11,11 +11,11 @@ We proposed a preliminary version of the SSR scheme in our [NeurIPS 2020 paper](
 
 If you find this library helpful or use it in your projects, please cite:
 ```bibtex
-@article{Yang21arXiv-certifiableperception,
-  title={Certifiable Outlier-Robust Geometric Perception: Exact Semidefinite Relaxations and Scalable Global Optimization},
+@article{Yang22tpami-certifiableperception,
+  title={Certifiably Optimal Outlier-Robust Geometric Perception: Semidefinite Relaxations and Scalable Global Optimization},
   author={Yang, Heng and Carlone, Luca},
-  journal={arXiv preprint arXiv:2109.03349},
-  year={2021}
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2022}
 }
 ```
 
