@@ -14,7 +14,7 @@ mosekpath   = '../../mosek';
 utilspath   = '../utils';
 manoptpath  = '../manopt';
 sdpnalpath  = '../../SDPNAL+v1.0';
-stridepath  = '../../STRIDE';
+stridepath  = '../STRIDE';
 addpath(genpath(pwd))
 addpath(genpath(cvxpath))
 addpath(genpath(mosekpath))
