@@ -160,7 +160,7 @@ if computeConstraintMatrix
     fprintf('Linear SDP: n = %d, m = %d, m_localize = %d, m_moment = %d, l = %d.\n',...
         problem.n,problem.m,problem.m_localize,problem.m_moment,l);
     
-    problem      = rmfield(problem,{'P','computeConstraintMatrix','Acell','m_localize','m_moment'});
+%     problem      = rmfield(problem,{'P','computeConstraintMatrix','Acell','m_localize','m_moment'});
 end
 
 
