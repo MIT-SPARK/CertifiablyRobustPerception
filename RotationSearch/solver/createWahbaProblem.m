@@ -1,6 +1,7 @@
 function [v1, v2, R_gt, options] = createWahbaProblem(options)
 %
-% Creates two sets of unit vectors v1 and v2, such that v2 = normalize(R_gt * v1 + noise) 
+% Creates two sets of unit vectors v1 and v2, such that v2 = normalize(R_gt
+% * v1 + noise) if normalize = true, or v2 = R_gt * v1 + noise otherwise
 % Points are returned in a 3xN matrix 
 %
 % options:
@@ -21,7 +22,7 @@ function [v1, v2, R_gt, options] = createWahbaProblem(options)
 % options.plotResidual: true to plot the residuals by ground-truth
 % rotations, i.e., norm(v2 - R_gt * v1)
 
-% options.fixRotation: true to fix the rotation to be idetity; if you want
+% options.fixRotation: true to fix the rotation to be identity; if you want
 % to specify a different R_gt, then provide options.R_gt as well
 
 % options.nrObjects: number of objects, each one corresponding to a
@@ -141,7 +142,6 @@ if options.isotropic
         options.noiseBound=tempNoiseBound;
     end
 
-
 else
     % distort the isotropic covariance matrix
     tempCovariance=zeros(3,3,options.N);
@@ -169,7 +169,6 @@ else
     options.Covariance=tempCovariance;
     options.noiseBound=tempNoiseBound;
 end
-
 
 switch options.v1_distribution
     case 'uniform'
@@ -295,7 +294,6 @@ if options.nrOutliers > 0
     end
     if options.shuffleOutlierIdx % randomly put outliers in the sequence
         options.outliersIds = sort( randsample(options.N,options.nrOutliers) );
-        
     else % put outliers at the end of v1 and v2
         options.outliersIds = [options.N-options.nrOutliers+1:options.N];
     end
