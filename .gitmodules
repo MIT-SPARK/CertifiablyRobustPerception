@@ -7,3 +7,6 @@
 [submodule "spotless"]
 	path = spotless
 	url = https://github.com/spot-toolbox/spotless.git
+[submodule "NearestRankDeficient/slra"]
+	path = NearestRankDeficient/slra
+	url = https://github.com/slra/slra.git
